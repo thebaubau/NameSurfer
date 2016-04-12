@@ -11,7 +11,10 @@ import java.util.*;
 
 public class NameSurferEntry implements NameSurferConstants {
 
-	/* Constructor: NameSurferEntry(line) */
+	private String name;
+	private int[] rank = new int[NDECADES - 1];
+
+   /* Constructor: NameSurferEntry(line) */
 	/**
 	 * Creates a new NameSurferEntry from a data line as it appears
 	 * in the data file.  Each line begins with the name, which is
@@ -19,19 +22,30 @@ public class NameSurferEntry implements NameSurferConstants {
 	 * decade.
 	 */
 	public NameSurferEntry(String line) {
-		// You fill this in //
+		int nameStart = line.indexOf(0);
+		int nameEnd = line.indexOf(" ");
+
+		name = name.substring(nameStart, nameEnd);
+
+		int rankStart = line.indexOf(nameEnd) + 1;
+		String rankString = line.substring(rankStart);
+		String[] stringRanks = rankString.split(" ");
+
+		for (int i = 0; i < stringRanks.length; i++){
+			rank[i] = Integer.parseInt(stringRanks[i]);
+		}
 	}
 
-	/* Method: getName() */
+   /* Method: getName() */
 	/**
 	 * Returns the name associated with this entry.
 	 */
 	public String getName() {
-		// You need to turn this stub into a real implementation //
+		if (name != null) return name;
 		return null;
 	}
 
-	/* Method: getRank(decade) */
+   /* Method: getRank(decade) */
 	/**
 	 * Returns the rank associated with an entry for a particular
 	 * decade.  The decade value is an integer indicating how many
@@ -40,18 +54,20 @@ public class NameSurferEntry implements NameSurferConstants {
 	 * not appear in a decade, the rank value is 0.
 	 */
 	public int getRank(int decade) {
-		// You need to turn this stub into a real implementation //
+		if (rank != null) return rank[decade];
 		return 0;
 	}
 
-	/* Method: toString() */
+	public int[] getRankArray(){
+		return rank;
+	}
+
+   /* Method: toString() */
 	/**
 	 * Returns a string that makes it easy to see the value of a
 	 * NameSurferEntry.
 	 */
 	public String toString() {
-		// You need to turn this stub into a real implementation //
-		return "";
+		return name + " " + rank;
 	}
 }
-

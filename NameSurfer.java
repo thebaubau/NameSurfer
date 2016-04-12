@@ -9,24 +9,47 @@ import acm.program.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-public class NameSurfer extends Program implements NameSurferConstants {
+public class NameSurfer extends ConsoleProgram implements NameSurferConstants {
 
-	/* Method: init() */
+	private JTextField entryName;
+	private JButton displayGraph;
+	private JButton clearGraph;
+
+
+   /* Method: init() */
 	/**
 	 * This method has the responsibility for reading in the data base
 	 * and initializing the interactors at the top of the window.
 	 */
 	public void init() {
-	    // You fill this in, along with any helper methods //
+		setSize(APPLICATION_WIDTH, APPLICATION_HEIGHT);
+
+		JLabel name = new JLabel("Name:");
+		entryName = new JTextField(20);
+		displayGraph = new JButton("Graph");
+		clearGraph = new JButton("Clear");
+
+		add(name, NORTH);
+		add(entryName, NORTH);
+		add(displayGraph, NORTH);
+		add(clearGraph, NORTH);
+
+		addActionListeners();
 	}
 
-	/* Method: actionPerformed(e) */
+   /* Method: actionPerformed(e) */
 	/**
 	 * This class is responsible for detecting when the buttons are
 	 * clicked, so you will have to define a method to respond to
 	 * button actions.
 	 */
 	public void actionPerformed(ActionEvent e) {
-		// You fill this in //
+		Object source = e.getSource();
+		if (source == displayGraph){
+			println("Graph: " + entryName.getText());
+		}
+		else if (source == clearGraph){
+			println("Clear");
+		}
 	}
 }
