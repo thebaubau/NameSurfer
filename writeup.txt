@@ -1,0 +1,27 @@
+Suppose that you want to plot two different types of data in the NameSurfer
+program: baby name popularities (as you're already doing), and surname
+popularities. Suppose you also have a second data file containing the
+popularities of surnames in the United States over time, structured in the same
+way as the baby names file. These questions ask you about the changes you would
+need to make to your program in order to support this.
+
+1. What changes would you make to the interactors in your program to support
+   the two different data sets? Why? Where in the program would you make these
+   changes? You don't need to give any actual code here - just describe the
+   changes at a high level.
+   
+   
+   
+2. What changes would you make to your program in order to store and retrieve
+   information about two different types of data? Where in the program would
+   you make these changes? As before, you don't need to give us actual code
+   here; high-level descriptions suffice.
+   
+   
+   
+3. What changes, if any, would you make to the NameSurferGraph to differentiate
+   between baby names and surnames? As before, you don't need to give us actual
+   code here; high-level descriptions suffice.
+   
+   
+   
