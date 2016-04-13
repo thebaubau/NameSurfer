@@ -10,12 +10,14 @@ import java.awt.event.*;
 import java.io.File;
 import javax.swing.*;
 
-public class NameSurfer extends ConsoleProgram implements NameSurferConstants {
+public class NameSurfer extends Program implements NameSurferConstants {
 
 	private JTextField entryName;
 	private JButton displayGraph;
 	private JButton clearGraph;
-	NameSurferDataBase dataBase;
+	private NameSurferDataBase dataBase;
+	private NameSurferGraph graph = new NameSurferGraph();
+
 
 
    /* Method: init() */
@@ -31,13 +33,15 @@ public class NameSurfer extends ConsoleProgram implements NameSurferConstants {
 		displayGraph = new JButton("Graph");
 		clearGraph = new JButton("Clear");
 
+		add(graph);
 		add(name, NORTH);
 		add(entryName, NORTH);
 		add(displayGraph, NORTH);
 		add(clearGraph, NORTH);
 
-		dataBase = new NameSurferDataBase(NAMES_DATA_FILE);
 
+		dataBase = new NameSurferDataBase(NAMES_DATA_FILE);
+		System.out.println(graph.getWidth());
 		addActionListeners();
 	}
 

@@ -27,6 +27,6 @@ public interface NameSurferConstants {
 	public static final int MAX_RANK = 1000;
 
 	/** The number of pixels to reserve at the top and bottom */
-	public static final int GRAPH_MARGIN_SIZE = 20;
+	public static final int GRAPH_MARGIN_SIZE = 30;
 
 }

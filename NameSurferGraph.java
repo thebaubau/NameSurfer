@@ -9,6 +9,7 @@
 
 import acm.graphics.*;
 import java.awt.event.*;
+import java.awt.geom.GeneralPath;
 import java.util.*;
 import java.awt.*;
 
@@ -20,10 +21,23 @@ public class NameSurferGraph extends GCanvas
 	 */
 	public NameSurferGraph() {
 		addComponentListener(this);
-		// You fill in the rest //
 	}
 	
-	
+	public void addGraphBackground(){
+		double decadeSeparator = getWidth() / 12;
+		double margin = getHeight() - GRAPH_MARGIN_SIZE;
+		int decade = START_DECADE;
+
+		for (int i = 1; i <= NDECADES; i++){
+			add(new GLine(decadeSeparator * i, 0, decadeSeparator * i, getHeight()));
+			add(new GLabel(Integer.toString(decade), decadeSeparator * (i - 1), getHeight() - 10));
+			decade += 10;
+		}
+
+		add(new GLine(0, GRAPH_MARGIN_SIZE, getWidth(), GRAPH_MARGIN_SIZE));
+		add(new GLine(0, margin, getWidth(), margin));
+	}
+
 	/**
 	 * Clears the list of name surfer entries stored inside this class.
 	 */
@@ -51,10 +65,10 @@ public class NameSurferGraph extends GCanvas
 	 * the size of the canvas changes.
 	 */
 	public void update() {
-		// You fill this in //
+		removeAll();
+		addGraphBackground();
 	}
-	
-	
+
 	/* Implementation of the ComponentListener interface */
 	public void componentHidden(ComponentEvent e) { }
 	public void componentMoved(ComponentEvent e) { }

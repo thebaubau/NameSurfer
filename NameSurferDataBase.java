@@ -59,7 +59,6 @@ public class NameSurferDataBase implements NameSurferConstants {
 	 * method returns null.
 	 */
 	public NameSurferEntry findEntry(String name) {
-
 		return nameDataBase.get(capitalizer(name));
 	}
 
