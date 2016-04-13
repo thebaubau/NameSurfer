@@ -39,7 +39,6 @@ public class NameSurfer extends Program implements NameSurferConstants {
 		add(displayGraph, NORTH);
 		add(clearGraph, NORTH);
 
-
 		dataBase = new NameSurferDataBase(NAMES_DATA_FILE);
 		System.out.println(graph.getWidth());
 		addActionListeners();
@@ -54,10 +53,15 @@ public class NameSurfer extends Program implements NameSurferConstants {
 	public void actionPerformed(ActionEvent e) {
 		Object source = e.getSource();
 		if (source == displayGraph){
-			println("Graph: " + dataBase.findEntry(entryName.getText()));
+			String name = entryName.getText();
+			NameSurferEntry entry = dataBase.findEntry(name);
+			if (entry != null){
+				graph.addEntry(entry);
+				graph.update();
+			}
 		}
 		else if (source == clearGraph){
-			println("Clear");
+			graph.clear();
 		}
 	}
 }
