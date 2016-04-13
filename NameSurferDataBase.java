@@ -14,11 +14,14 @@ import acm.util.ErrorException;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Map;
 
 public class NameSurferDataBase implements NameSurferConstants {
 
-	private HashMap<String, int[]> nameDataBase = new HashMap<>();
+	private HashMap<String, NameSurferEntry> nameDataBase = new HashMap<>();
+	NameSurferEntry entry;
 
    /* Constructor: NameSurferDataBase(filename) */
 	/**
@@ -29,20 +32,25 @@ public class NameSurferDataBase implements NameSurferConstants {
 	 */
 
 	public NameSurferDataBase(String filename) {
+		updateNameDataBase(filename);
+	}
+
+	private void updateNameDataBase(String filename){
+		BufferedReader rd;
 		try {
-			BufferedReader rd = new BufferedReader(new FileReader(NAMES_DATA_FILE));
+			rd = new BufferedReader(new FileReader(filename));
 			while (true){
 				String line = rd.readLine();
+
 				if (line == null) break;
-				NameSurferEntry nameSurfer = new NameSurferEntry(line);
-				nameDataBase.put(nameSurfer.getName(), nameSurfer.getRankArray());
+				entry = new NameSurferEntry(line);
+				nameDataBase.put(entry.getName(), entry);
 			}
 			rd.close();
 		} catch (IOException ex){
 			throw new ErrorException(ex);
 		}
 	}
-
 
    /* Method: findEntry(name) */
 	/**
@@ -51,7 +59,21 @@ public class NameSurferDataBase implements NameSurferConstants {
 	 * method returns null.
 	 */
 	public NameSurferEntry findEntry(String name) {
-		// You need to turn this stub into a real implementation //
-		return null;
+
+		return nameDataBase.get(capitalizer(name));
+	}
+
+	private String capitalizer(String name){
+		String result;
+		char firstChar = name.charAt(0);
+		String remainder = name.substring(1);
+
+		if (Character.isLowerCase(firstChar)){
+			firstChar = Character.toUpperCase(firstChar);
+		}
+		remainder = remainder.toLowerCase();
+
+		result = firstChar + remainder;
+		return result;
 	}
 }

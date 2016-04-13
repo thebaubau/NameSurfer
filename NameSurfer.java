@@ -7,6 +7,7 @@
 
 import acm.program.*;
 import java.awt.event.*;
+import java.io.File;
 import javax.swing.*;
 
 public class NameSurfer extends ConsoleProgram implements NameSurferConstants {
@@ -14,6 +15,7 @@ public class NameSurfer extends ConsoleProgram implements NameSurferConstants {
 	private JTextField entryName;
 	private JButton displayGraph;
 	private JButton clearGraph;
+	NameSurferDataBase dataBase;
 
 
    /* Method: init() */
@@ -34,6 +36,8 @@ public class NameSurfer extends ConsoleProgram implements NameSurferConstants {
 		add(displayGraph, NORTH);
 		add(clearGraph, NORTH);
 
+		dataBase = new NameSurferDataBase(NAMES_DATA_FILE);
+
 		addActionListeners();
 	}
 
@@ -46,7 +50,7 @@ public class NameSurfer extends ConsoleProgram implements NameSurferConstants {
 	public void actionPerformed(ActionEvent e) {
 		Object source = e.getSource();
 		if (source == displayGraph){
-			println("Graph: " + entryName.getText());
+			println("Graph: " + dataBase.findEntry(entryName.getText()));
 		}
 		else if (source == clearGraph){
 			println("Clear");
