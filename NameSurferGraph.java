@@ -8,6 +8,8 @@
  */
 
 import acm.graphics.*;
+import com.sun.javafx.sg.prism.NGCircle;
+
 import java.awt.event.*;
 import java.awt.geom.GeneralPath;
 import java.util.*;
@@ -34,13 +36,20 @@ public class NameSurferGraph extends GCanvas
 	}
 	
 	public void addGraphBackground(){
-		double decadeSeparator = getWidth() / 12;
+		double decadeSeparator = getWidth() / NDECADES;
 		double margin = getHeight() - GRAPH_MARGIN_SIZE;
 		int decade = START_DECADE;
+		Font font = new Font("Serif", Font.ITALIC, 14);
 
 		for (int i = 1; i <= NDECADES; i++){
-			add(new GLine(decadeSeparator * i, 0, decadeSeparator * i, getHeight()));
-			add(new GLabel(Integer.toString(decade), decadeSeparator * (i - 1), getHeight() - 10));
+			GLine vertical = new GLine(decadeSeparator * i, 0, decadeSeparator * i, getHeight());
+			vertical.setColor(Color.LIGHT_GRAY);
+			GLabel label = new GLabel(Integer.toString(decade), decadeSeparator * (i - 1) + 3, getHeight() - 7);
+			label.setFont(font);
+			label.setColor(Color.DARK_GRAY);
+
+			add(label);
+			add(vertical);
 			decade += 10;
 		}
 
@@ -53,10 +62,9 @@ public class NameSurferGraph extends GCanvas
 	 */
 	public void clear() {
 		namesDisplayed.clear();
+		update();
 	}
 	
-	
-	/* Method: addEntry(entry) */
 	/**
 	 * Adds a new NameSurferEntry to the list of entries on the display.
 	 * Note that this method does not actually draw the graph, but
@@ -64,6 +72,13 @@ public class NameSurferGraph extends GCanvas
 	 */
 	public void addEntry(NameSurferEntry entry) {
 		namesDisplayed.add(entry);
+	}
+
+	/**
+	 * Removes an entry from the list and graph
+     */
+	public void removeEntry(NameSurferEntry entry){
+		namesDisplayed.remove(entry);
 	}
 
 	/**
@@ -78,55 +93,80 @@ public class NameSurferGraph extends GCanvas
 		addGraphBackground();
 		if (namesDisplayed.size() >= 0) {
 			for (int i = 0; i < namesDisplayed.size(); i++) {
-				NameSurferEntry entry = namesDisplayed.get(i);
-				drawGraphEntry(i, entry);
+				drawGraphEntry(i, namesDisplayed.get(i));
 			}
 		}
 	}
 
 	private void drawGraphEntry(int entryNumber, NameSurferEntry entry) {
-		String name = entry.getName();
+		double decadeSeparator = getWidth() / 12;
+		double radius = 2;
+		Font font = new Font("Serif", Font.BOLD, 14);
 
-		for (int i = 0; i < NDECADES; i++) {
+		for (int i = 0; i < NDECADES - 1; i++) {
 			int startRank = entry.getRank(i);
 			int nextRank  = entry.getRank(i + 1);
 
-			double decadeSeparator = getWidth() / NDECADES;
-			double marginDifference = getHeight() - GRAPH_MARGIN_SIZE;
-			double x1 = decadeSeparator * i;
-			double x2 = decadeSeparator * (i + 1);
-			double y1 = 0;
-			double y2 = 0;
+			// Calculating the X coordinate for all graph objects
+			double x0 = decadeSeparator * i;
+			double x1 = decadeSeparator * (i + 1);
 
-			if (startRank != 0 && nextRank != 0) {
-				y1 = GRAPH_MARGIN_SIZE + (marginDifference * 2) * startRank / MAX_RANK;
-				y2 = GRAPH_MARGIN_SIZE + (marginDifference * 2) * nextRank / MAX_RANK;
-			}
-			else if (startRank == 0 && nextRank == 0) {
-				y1 = marginDifference;
-				y2 = marginDifference;
-			}
-			else if (startRank == 0){
-				y1 = marginDifference;
-				y2 = GRAPH_MARGIN_SIZE + (marginDifference * 2) * nextRank / MAX_RANK;
-			}
-			else if (nextRank == 0) {
-				y1 = GRAPH_MARGIN_SIZE + (marginDifference * 2) * startRank / MAX_RANK;
-				y2 = marginDifference;
-			}
+			// Creating the lines, rank labels, names and points at the corresponding coordinates on the graph
+			GLabel rankLabel = new GLabel(Integer.toString(startRank), x0 + 3, calculatePosY(startRank) - 3);
+			GLabel lastLabel = new GLabel(Integer.toString(nextRank), x1 + 3, calculatePosY(nextRank) - 3);
+			GLine line       = new GLine(x0, calculatePosY(startRank), x1, calculatePosY(nextRank));
+			GOval marker     = new GOval(x1 - radius, calculatePosY(nextRank) - radius, radius * 2, radius * 2);
+			GLabel name      = new GLabel(entry.getName(), 3, calculatePosY(entry.getRank(0)) + 18);
 
-			GLine line = new GLine(x1, y1, x2, y2);
-			if (entryNumber % 4 == 1) {
+			name.setFont(font);
+			marker.setFilled(true);
+
+			// Changing colors for lines and labels
+			if (entryNumber % 4 == 0) {
+				line.setColor(Color.black);
+				rankLabel.setColor(Color.black);
+				lastLabel.setColor(Color.black);
+				name.setColor(Color.black);
+				marker.setColor(Color.black);
+			}
+			else if (entryNumber % 4 == 1) {
 				line.setColor(Color.RED);
+				rankLabel.setColor(Color.RED);
+				lastLabel.setColor(Color.RED);
+				name.setColor(Color.RED);
+				marker.setColor(Color.RED);
 			}
 			else if (entryNumber % 4 == 2) {
-				line.setColor(Color.BLUE);
+				line.setColor(Color.blue);
+				rankLabel.setColor(Color.blue);
+				lastLabel.setColor(Color.blue);
+				name.setColor(Color.blue);
+				marker.setColor(Color.blue);
 			}
 			else if (entryNumber % 4 == 3) {
 				line.setColor(Color.MAGENTA);
+				rankLabel.setColor(Color.MAGENTA);
+				lastLabel.setColor(Color.MAGENTA);
+				name.setColor(Color.MAGENTA);
+				marker.setColor(Color.MAGENTA);
 			}
-
 			add(line);
+			add(rankLabel);
+			add(lastLabel);
+			add(name);
+			add(marker);
 		}
+	}
+
+	private double calculatePosY(int rank){
+		double marginDifference = 2 * GRAPH_MARGIN_SIZE;
+		double posY;
+		if (rank != 0){
+			posY = GRAPH_MARGIN_SIZE + (getHeight() - marginDifference) * rank / MAX_RANK;
+		}
+		else {
+			posY = getHeight() - GRAPH_MARGIN_SIZE;
+		}
+		return posY;
 	}
 }

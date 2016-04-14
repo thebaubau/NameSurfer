@@ -15,6 +15,7 @@ public class NameSurfer extends Program implements NameSurferConstants {
 	private JTextField entryName;
 	private JButton displayGraph;
 	private JButton clearGraph;
+	private JButton clearEntry;
 	private NameSurferDataBase dataBase;
 	private NameSurferGraph graph = new NameSurferGraph();
 
@@ -31,16 +32,17 @@ public class NameSurfer extends Program implements NameSurferConstants {
 		JLabel name = new JLabel("Name:");
 		entryName = new JTextField(20);
 		displayGraph = new JButton("Graph");
-		clearGraph = new JButton("Clear");
+		clearGraph = new JButton("Clear Graph");
+		clearEntry = new JButton("Clear");
 
 		add(graph);
 		add(name, NORTH);
 		add(entryName, NORTH);
 		add(displayGraph, NORTH);
 		add(clearGraph, NORTH);
+		add(clearEntry, NORTH);
 
 		dataBase = new NameSurferDataBase(NAMES_DATA_FILE);
-		System.out.println(graph.getWidth());
 		addActionListeners();
 	}
 
@@ -52,7 +54,7 @@ public class NameSurfer extends Program implements NameSurferConstants {
 	 */
 	public void actionPerformed(ActionEvent e) {
 		Object source = e.getSource();
-		if (source == displayGraph){
+		if (source == displayGraph || source == entryName){
 			String name = entryName.getText();
 			NameSurferEntry entry = dataBase.findEntry(name);
 			if (entry != null){
@@ -60,8 +62,17 @@ public class NameSurfer extends Program implements NameSurferConstants {
 				graph.update();
 			}
 		}
+		else if (source == clearEntry){
+			String name = entryName.getText();
+			NameSurferEntry entry = dataBase.findEntry(name);
+			if (entry != null){
+				graph.removeEntry(entry);
+				graph.update();
+			}
+		}
 		else if (source == clearGraph){
 			graph.clear();
+			graph.update();
 		}
 	}
 }
