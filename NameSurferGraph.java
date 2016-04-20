@@ -8,10 +8,7 @@
  */
 
 import acm.graphics.*;
-import com.sun.javafx.sg.prism.NGCircle;
-
 import java.awt.event.*;
-import java.awt.geom.GeneralPath;
 import java.util.*;
 import java.awt.*;
 
@@ -35,7 +32,7 @@ public class NameSurferGraph extends GCanvas
 		namesDisplayed = new ArrayList<>();
 	}
 	
-	public void addGraphBackground(){
+	private void addGraphBackground(){
 		double decadeSeparator = getWidth() / NDECADES;
 		double margin = getHeight() - GRAPH_MARGIN_SIZE;
 		int decade = START_DECADE;
